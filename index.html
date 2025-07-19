@@ -730,13 +730,13 @@
         }
         
         function submitToGoogleForms(data) {
-            // URL de tu Google Form - CON TUS ENTRY IDS REALES
+            // URL de tu Google Form - CON TUS ENTRY IDS ACTUALIZADOS
             const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf350RHlSlLJyh9fiUeiqA2fT1iTvvSG-s3FltYMTH54kpKhQ/formResponse';
             
-            // Crear FormData con todos los campos usando los Entry IDs reales
+            // Crear FormData con todos los campos usando los Entry IDs NUEVOS
             const formData = new FormData();
             
-            // Mapeo completo con tus Entry IDs
+            // Mapeo completo con tus Entry IDs actualizados
             formData.append('entry.300475451', data.participantId);                    // 1. ID Participante
             formData.append('entry.1284686737', data.timeSpentMinutes);               // 2. Tiempo Empleado
             formData.append('entry.926759471', data.tableData.RF1.entradas);          // 3. RF1-E
@@ -759,11 +759,24 @@
             formData.append('entry.91219835', data.tableData.RF4.lecturas);           // 20. RF4-R
             formData.append('entry.384853585', data.tableData.RF4.escrituras);        // 21. RF4-W
             formData.append('entry.623657995', data.tableData.RF4.total);             // 22. RF4-Total
-            formData.append('entry.1348082673', data.totals.granTotal);               // 23. Gran Total CFP
-            formData.append('entry.1687498595', data.textAnswers.justificacionRF1);   // 24. Justificación RF1
-            formData.append('entry.836448848', data.textAnswers.distinguirConsultas); // 25. Distinguir Consultas RF3
-            formData.append('entry.629652452', data.textAnswers.fronteraSistema);     // 26. Frontera del Sistema
-            formData.append('entry.1716192422', data.textAnswers.tamañoTotal);        // 27. Tamaño Total
+            formData.append('entry.809144775', data.tableData.RF5.entradas);          // 23. RF5-E (NUEVO)
+            formData.append('entry.1240997932', data.tableData.RF5.salidas);          // 24. RF5-X (NUEVO)
+            formData.append('entry.283902922', data.tableData.RF5.lecturas);          // 25. RF5-R (NUEVO)
+            formData.append('entry.347072477', data.tableData.RF5.escrituras);        // 26. RF5-W (NUEVO)
+            formData.append('entry.731554035', data.tableData.RF5.total);             // 27. RF5-Total (NUEVO)
+            formData.append('entry.537629101', data.tableData.RF6.entradas);          // 28. RF6-E (NUEVO)
+            formData.append('entry.779600758', data.tableData.RF6.salidas);           // 29. RF6-X (NUEVO)
+            formData.append('entry.496198568', data.tableData.RF6.lecturas);          // 30. RF6-R (NUEVO)
+            formData.append('entry.930168337', data.tableData.RF6.escrituras);        // 31. RF6-W (NUEVO)
+            formData.append('entry.2128805208', data.tableData.RF6.total);            // 32. RF6-Total (NUEVO)
+            formData.append('entry.1347442573', data.totals.granTotal);               // 33. Gran Total CFP
+            formData.append('entry.1136182533', data.textAnswers.justificacionRF1);   // 34. Justificación RF1
+            formData.append('entry.1338129771', data.textAnswers.distinguirConsultas); // 35. Distinguir Consultas RF3
+            formData.append('entry.1348082673', data.textAnswers.analisisRF5);        // 36. Análisis RF5 (NUEVO)
+            formData.append('entry.1687498595', data.textAnswers.validacionesRF6);    // 37. Validaciones RF6 (NUEVO)
+            formData.append('entry.836448848', data.textAnswers.fronteraSistema);     // 38. Frontera del Sistema
+            formData.append('entry.629652452', data.textAnswers.compararComplejidad); // 39. Comparar Complejidad (NUEVO)
+            formData.append('entry.1716192422', data.textAnswers.tamañoTotal);        // 40. Tamaño Total
             
             // Enviar datos usando fetch
             fetch(GOOGLE_FORM_URL, {
@@ -771,7 +784,7 @@
                 mode: 'no-cors', // Importante para Google Forms
                 body: formData
             }).then(() => {
-                console.log('✅ Datos enviados exitosamente a Google Forms');
+                console.log('✅ Datos enviados exitosamente a Google Forms con TODOS los campos nuevos');
             }).catch(error => {
                 console.error('❌ Error al enviar a Google Forms:', error);
             });
