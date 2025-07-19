@@ -628,6 +628,18 @@
             const endTime = new Date();
             const timeSpent = Math.round((endTime - startTime) / 1000); // seconds
             
+            // Calcular tiempo transcurrido basado en el timer de forma más precisa
+            // Usar directamente el tiempo mostrado en el cronómetro
+            const timerDisplayed = document.getElementById('timer').textContent;
+            const [minutesLeft, secondsLeft] = timerDisplayed.split(':').map(Number);
+            const timeLeftTotal = minutesLeft * 60 + secondsLeft;
+            const timerSeconds = 45 * 60 - timeLeftTotal; // tiempo transcurrido exacto
+            
+            // Calcular minutos y segundos por separado para formato legible
+            const minutosCompletos = Math.floor(timerSeconds / 60);
+            const segundosRestantes = timerSeconds % 60;
+            const tiempoLegible = `${minutosCompletos} minuto${minutosCompletos !== 1 ? 's' : ''} y ${segundosRestantes} segundo${segundosRestantes !== 1 ? 's' : ''}`;
+            
             // Collect table data
             const tableData = {};
             const rows = document.querySelectorAll('.analysis-table tbody tr:not(.total-row)');
@@ -671,8 +683,9 @@
                 participantId,
                 startTime: startTime.toISOString(),
                 endTime: endTime.toISOString(),
-                timeSpentSeconds: timeSpent,
-                timeSpentMinutes: Math.round(timeSpent / 60 * 100) / 100,
+                timeSpentSeconds: timerSeconds, // tiempo exacto en segundos
+                timeSpentMinutes: Math.round((timerSeconds / 60) * 100) / 100, // tiempo en minutos decimales
+                timeSpentReadable: tiempoLegible, // formato legible: "2 minutos y 5 segundos"
                 tableData,
                 totals,
                 textAnswers,
@@ -720,7 +733,7 @@
             alert(`¡Examen enviado automáticamente!
 
 📊 Participante: ${data.participantId}
-⏱️ Tiempo: ${data.timeSpentMinutes} minutos  
+⏱️ Tiempo: ${data.timeSpentReadable}
 🎯 Total CFP: ${data.totals.granTotal}
 
 ✅ Datos enviados exitosamente
@@ -738,7 +751,7 @@
             
             // Mapeo completo con tus Entry IDs actualizados
             formData.append('entry.300475451', data.participantId);                    // 1. ID Participante
-            formData.append('entry.1284686737', data.timeSpentMinutes);               // 2. Tiempo Empleado
+            formData.append('entry.1284686737', data.timeSpentReadable);               // 2. Tiempo Empleado en formato legible
             formData.append('entry.926759471', data.tableData.RF1.entradas);          // 3. RF1-E
             formData.append('entry.2050957752', data.tableData.RF1.salidas);          // 4. RF1-X
             formData.append('entry.1551223414', data.tableData.RF1.lecturas);         // 5. RF1-R
@@ -797,7 +810,7 @@
 ID Participante: ${data.participantId}
 Tiempo de inicio: ${new Date(data.startTime).toLocaleString()}
 Tiempo de finalización: ${new Date(data.endTime).toLocaleString()}
-Tiempo total empleado: ${data.timeSpentMinutes} minutos
+Tiempo total empleado: ${data.timeSpentReadable}
 
 ANÁLISIS COSMIC:
 ================
