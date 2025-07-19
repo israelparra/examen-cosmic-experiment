@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen COSMIC Function Points</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .exam-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .exam-header {
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .exam-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exam-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .timer-section {
+            background: rgba(255,255,255,0.1);
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .exam-content {
+            padding: 40px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2c3e50;
+        }
+
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .case-study {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .case-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .case-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .requirements {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .requirements h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .req-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #2c3e50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .questions-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .question h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .answer-space {
+            margin-top: 15px;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #2c3e50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+        }
+
+        .analysis-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .analysis-table th {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .analysis-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .analysis-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .analysis-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .total-row {
+            background: #e7f3ff !important;
+            font-weight: bold;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
+        }
+
+        .highlight {
+            background: rgba(44, 62, 80, 0.1);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .start-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .exam-disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .exam-content {
+                padding: 20px;
+            }
+            
+            .exam-header h1 {
+                font-size: 2rem;
+            }
+            
+            .case-title {
+                font-size: 1.5rem;
+            }
+            
+            .analysis-table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <div class="exam-header">
+            <h1>🎯 Examen COSMIC Function Points</h1>
+            <p>Evaluación de Aplicabilidad del Método COSMIC</p>
+            
+            <div class="timer-section">
+                <h3>⏱️ Tiempo del Examen</h3>
+                <div class="timer" id="timer">45:00</div>
+                <button id="start-timer" class="start-btn" onclick="startExam()">🚀 Iniciar Examen</button>
+                <div id="timer-status" style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">Presiona el botón para comenzar</div>
+            </div>
+        </div>
+
+        <div class="exam-content" id="exam-content">
+            <div class="submit-section" style="margin-bottom: 30px; padding: 20px;">
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.3rem;">👤 Información del Participante</h3>
+                <label for="participant-id" style="display: block; margin-bottom: 10px; font-weight: 600; color: #495057;">
+                    Nombre del Participante (requerido):
+                </label>
+                <input type="text" id="participant-id" class="answer-input" placeholder="Ingresa tu nombre completo" style="max-width: 400px; margin: 0 auto; display: block;" required>
+            </div>
+
+            <div class="instructions">
+                <h3>📋 Instrucciones</h3>
+                <ul>
+                    <li><strong>Tiempo límite:</strong> 45 minutos para completar el examen</li>
+                    <li><strong>Material de apoyo:</strong> Puedes consultar la cheat sheet proporcionada</li>
+                    <li><strong>Objetivo:</strong> Aplicar COSMIC Function Points al caso de estudio</li>
+                    <li><strong>Formato:</strong> Completa todas las secciones y justifica tus respuestas</li>
+                    <li><strong>Evaluación:</strong> Se medirá la correctitud de tu análisis COSMIC</li>
+                </ul>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Recordatorio:</strong> Cada movimiento de datos = 1 CFP. Enfócate en identificar los 4 tipos: Entrada (E), Salida (X), Lectura (R), Escritura (W).
+            </div>
+
+            <div class="case-study">
+                <h2 class="case-title">📱 Caso de Estudio: Sistema de Gestión de Biblioteca</h2>
+                
+                <div class="case-description">
+                    <p>Debes analizar el tamaño funcional de un <strong>Sistema de Gestión de Biblioteca</strong> usando COSMIC Function Points. El sistema permite a bibliotecarios y usuarios gestionar el préstamo de libros.</p>
+                </div>
+
+                <div class="requirements">
+                    <h4>🔍 Descripción Funcional del Sistema</h4>
+                    
+                    <div class="req-item">
+                        <strong>RF1 - Registro de nuevo usuario:</strong><br>
+                        El bibliotecario puede registrar un nuevo usuario en el sistema. Debe ingresar: nombre completo, número de identificación, teléfono y email. El sistema valida que el número de identificación no exista previamente consultando la base de datos. Si no existe, guarda los datos del usuario y genera automáticamente un número de carnet. El sistema muestra un mensaje de confirmación con el número de carnet asignado.
+                    </div>
+
+                    <div class="req-item">
+                        <strong>RF2 - Consulta de disponibilidad de libros:</strong><br>
+                        Un usuario (bibliotecario o lector) puede consultar si un libro está disponible. Ingresa el título o ISBN del libro. El sistema busca en la base de datos de libros y verifica en la tabla de préstamos si está disponible. Muestra la información del libro (título, autor, ubicación) y su estado (disponible/prestado).
+                    </div>
+
+                    <div class="req-item">
+                        <strong>RF3 - Registro de préstamo:</strong><br>
+                        El bibliotecario registra un préstamo cuando un usuario solicita un libro. Ingresa el número de carnet del usuario y el ISBN del libro. El sistema consulta los datos del usuario y verifica que el libro esté disponible. Si todo está correcto, registra el préstamo con fecha actual y fecha de devolución (15 días después). Actualiza el estado del libro a "prestado" y muestra un comprobante de préstamo.
+                    </div>
+
+                    <div class="req-item">
+                        <strong>RF4 - Proceso de devolución:</strong><br>
+                        Cuando un usuario devuelve un libro, el bibliotecario ingresa el número de carnet y el ISBN. El sistema busca el préstamo activo, calcula si hay multa por retraso consultando las tarifas en la base de datos. Actualiza el estado del libro a "disponible", cierra el registro de préstamo, y si hay multa, la registra en el sistema. Muestra un mensaje con el estado de la devolución y monto de multa si aplica.
+                    </div>
+
+                    <div class="req-item">
+                        <strong>RF5 - Gestión de multas:</strong><br>
+                        El bibliotecario puede consultar las multas pendientes de un usuario ingresando su número de carnet. El sistema busca todas las multas no pagadas del usuario, calcula el total adeudado y muestra un reporte detallado con fechas y montos. Cuando el usuario paga, el bibliotecario registra el pago indicando el monto y método de pago. El sistema actualiza el estado de las multas como "pagadas" y genera un comprobante de pago.
+                    </div>
+
+                    <div class="req-item">
+                        <strong>RF6 - Renovación de préstamo:</strong><br>
+                        Un usuario puede solicitar renovar un préstamo antes de la fecha de vencimiento. El bibliotecario ingresa el número de carnet y el ISBN del libro. El sistema verifica que el préstamo esté activo, que no tenga multas pendientes el usuario, y que no haya reservas del libro por otros usuarios consultando la tabla de reservas. Si cumple las condiciones, extiende la fecha de devolución por 15 días más, registra la renovación en el historial y muestra confirmación. Si no cumple, muestra el motivo del rechazo.
+                    </div>
+                </div>
+            </div>
+
+            <div class="questions-section">
+                <h3>📊 Análisis COSMIC - Completa la siguiente tabla</h3>
+                
+                <p style="margin-bottom: 20px;">Para cada requisito funcional, identifica y cuenta los movimientos de datos. Recuerda: <span class="highlight">E (Entrada), X (Salida), R (Lectura), W (Escritura)</span></p>
+
+                <table class="analysis-table">
+                    <thead>
+                        <tr>
+                            <th>Requisito Funcional</th>
+                            <th>Entradas (E)</th>
+                            <th>Salidas (X)</th>
+                            <th>Lecturas (R)</th>
+                            <th>Escrituras (W)</th>
+                            <th>Total CFP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>RF1 - Registro de nuevo usuario</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RF2 - Consulta disponibilidad</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RF3 - Registro de préstamo</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RF4 - Proceso de devolución</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RF5 - Gestión de multas</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>RF6 - Renovación de préstamo</strong></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="10" placeholder="0"></td>
+                            <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>TOTAL DEL SISTEMA</strong></td>
+                            <td><input type="number" placeholder="0" readonly style="background: #e7f3ff; font-weight: bold;"></td>
+                            <td><input type="number" placeholder="0" readonly style="background: #e7f3ff; font-weight: bold;"></td>
+                            <td><input type="number" placeholder="0" readonly style="background: #e7f3ff; font-weight: bold;"></td>
+                            <td><input type="number" placeholder="0" readonly style="background: #e7f3ff; font-weight: bold;"></td>
+                            <td><input type="number" placeholder="0" readonly style="background: #e7f3ff; font-weight: bold;" id="grand-total"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="questions-section">
+                <h3>✍️ Preguntas de Justificación</h3>
+                
+                <div class="question">
+                    <h4>1. Explica tu razonamiento para RF1 (Registro de nuevo usuario)</h4>
+                    <p>Identifica específicamente qué consideraste como Entrada, Salida, Lectura y Escritura, y por qué.</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="4" placeholder="Escribe tu justificación aquí..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>2. Para RF3 (Registro de préstamo), ¿por qué es importante distinguir entre los diferentes tipos de consultas a la base de datos?</h4>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="3" placeholder="Explica la diferencia entre las consultas realizadas..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>3. Analiza RF5 (Gestión de multas) - ¿Cuántos procesos funcionales identificas?</h4>
+                    <p>Este requisito describe múltiples operaciones. Explica si lo consideraste como un solo proceso o varios procesos separados y justifica tu decisión.</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="4" placeholder="Explica tu análisis de los procesos en RF5..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>4. Para RF6 (Renovación de préstamo), identifica las validaciones que requieren lectura</h4>
+                    <p>Enumera todas las consultas que el sistema debe realizar para validar si se puede renovar un préstamo.</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="3" placeholder="Lista las validaciones que requieren consultar la base de datos..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>5. Identifica la frontera del sistema</h4>
+                    <p>¿Qué incluiste dentro del sistema y qué consideraste como usuarios funcionales externos?</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="3" placeholder="Define la frontera del sistema..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>6. Compara la complejidad de los requisitos</h4>
+                    <p>¿Cuál de los 6 requisitos consideras el más complejo en términos de CFP y por qué? ¿Cómo se relaciona esto con la complejidad percibida del desarrollo?</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="4" placeholder="Compara la complejidad funcional vs. complejidad de desarrollo..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>7. ¿Cuál es el tamaño funcional total del sistema en CFP? ¿Te parece un resultado razonable?</h4>
+                    <div class="answer-space">
+                        <input type="text" class="answer-input" placeholder="Total en CFP y comentario sobre si es razonable...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">                
+                <button class="submit-btn" onclick="finishExam()">🚀 Finalizar y Enviar Examen</button>
+                <p style="margin-top: 15px; color: #6c757d;">
+                    Asegúrate de haber completado todas las secciones antes de enviar
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer functionality
+        let timeLeft = 45 * 60; // 45 minutes in seconds
+        let timerInterval;
+        let examStarted = false;
+        let startTime;
+        
+        function startExam() {
+            if (examStarted) return;
+            
+            examStarted = true;
+            startTime = new Date();
+            
+            // Disable start button
+            const startBtn = document.getElementById('start-timer');
+            startBtn.disabled = true;
+            startBtn.textContent = '⏱️ Examen en Progreso';
+            
+            // Update status
+            document.getElementById('timer-status').textContent = 'Examen iniciado - ¡Buena suerte!';
+            
+            // Start timer
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running low
+            const timerElement = document.getElementById('timer');
+            if (timeLeft <= 300) { // 5 minutes
+                timerElement.style.color = '#dc3545';
+            } else if (timeLeft <= 600) { // 10 minutes
+                timerElement.style.color = '#ffc107';
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('⏰ ¡Tiempo agotado! El examen se enviará automáticamente.');
+                finishExam();
+                return;
+            }
+            
+            timeLeft--;
+        }
+        
+        // Auto-calculate totals
+        function calculateTotals() {
+            const rows = document.querySelectorAll('.analysis-table tbody tr:not(.total-row)');
+            let totalE = 0, totalX = 0, totalR = 0, totalW = 0, grandTotal = 0;
+            
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll('input[type="number"]:not([readonly])');
+                let rowTotal = 0;
+                
+                inputs.forEach((input, index) => {
+                    const value = parseInt(input.value) || 0;
+                    rowTotal += value;
+                    
+                    // Add to column totals
+                    switch(index) {
+                        case 0: totalE += value; break;
+                        case 1: totalX += value; break;
+                        case 2: totalR += value; break;
+                        case 3: totalW += value; break;
+                    }
+                });
+                
+                // Update row total
+                row.querySelector('input[readonly]').value = rowTotal;
+                grandTotal += rowTotal;
+            });
+            
+            // Update total row
+            const totalRow = document.querySelector('.total-row');
+            const totalInputs = totalRow.querySelectorAll('input[readonly]');
+            totalInputs[0].value = totalE;
+            totalInputs[1].value = totalX;
+            totalInputs[2].value = totalR;
+            totalInputs[3].value = totalW;
+            totalInputs[4].value = grandTotal;
+        }
+        
+        // Add event listeners to calculate totals automatically
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[type="number"]:not([readonly])').forEach(input => {
+                input.addEventListener('input', calculateTotals);
+            });
+        });
+        
+        function collectExamData() {
+            const participantId = document.getElementById('participant-id').value.trim();
+            if (!participantId) {
+                alert('Por favor ingresa tu nombre antes de enviar.');
+                return null;
+            }
+            
+            const endTime = new Date();
+            const timeSpent = Math.round((endTime - startTime) / 1000); // seconds
+            
+            // Collect table data
+            const tableData = {};
+            const rows = document.querySelectorAll('.analysis-table tbody tr:not(.total-row)');
+            rows.forEach((row, index) => {
+                const rfName = ['RF1', 'RF2', 'RF3', 'RF4', 'RF5', 'RF6'][index];
+                const inputs = row.querySelectorAll('input[type="number"]:not([readonly])');
+                tableData[rfName] = {
+                    entradas: parseInt(inputs[0].value) || 0,
+                    salidas: parseInt(inputs[1].value) || 0,
+                    lecturas: parseInt(inputs[2].value) || 0,
+                    escrituras: parseInt(inputs[3].value) || 0,
+                    total: parseInt(row.querySelector('input[readonly]').value) || 0
+                };
+            });
+            
+            // Collect totals
+            const totalRow = document.querySelector('.total-row');
+            const totalInputs = totalRow.querySelectorAll('input[readonly]');
+            const totals = {
+                totalEntradas: parseInt(totalInputs[0].value) || 0,
+                totalSalidas: parseInt(totalInputs[1].value) || 0,
+                totalLecturas: parseInt(totalInputs[2].value) || 0,
+                totalEscrituras: parseInt(totalInputs[3].value) || 0,
+                granTotal: parseInt(totalInputs[4].value) || 0
+            };
+            
+            // Collect text answers
+            const textAnswers = {};
+            const textareas = document.querySelectorAll('textarea.answer-input');
+            textAnswers.justificacionRF1 = textareas[0].value.trim();
+            textAnswers.distinguirConsultas = textareas[1].value.trim();
+            textAnswers.analisisRF5 = textareas[2].value.trim();
+            textAnswers.validacionesRF6 = textareas[3].value.trim();
+            textAnswers.fronteraSistema = textareas[4].value.trim();
+            textAnswers.compararComplejidad = textareas[5].value.trim();
+            
+            const finalAnswer = document.querySelector('input[type="text"].answer-input');
+            textAnswers.tamañoTotal = finalAnswer.value.trim();
+            
+            return {
+                participantId,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString(),
+                timeSpentSeconds: timeSpent,
+                timeSpentMinutes: Math.round(timeSpent / 60 * 100) / 100,
+                tableData,
+                totals,
+                textAnswers,
+                examCompleted: true
+            };
+        }
+        
+        function finishExam() {
+            if (!examStarted) {
+                alert('Debes iniciar el examen primero.');
+                return;
+            }
+            
+            const examData = collectExamData();
+            if (!examData) return;
+            
+            const confirmSubmit = confirm('¿Estás seguro de que quieres finalizar el examen? No podrás hacer cambios después.');
+            if (confirmSubmit) {
+                // Clear timer
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+                
+                // Send data
+                sendExamResults(examData);
+                
+                // Disable form
+                document.getElementById('exam-content').classList.add('exam-disabled');
+                
+                alert('¡Examen enviado correctamente! Gracias por tu participación.');
+            }
+        }
+        
+        function sendExamResults(data) {
+            // Console log para debugging
+            console.log('RESULTADOS DEL EXAMEN COSMIC:', data);
+            
+            // Enviar automáticamente a Google Forms
+            submitToGoogleForms(data);
+            
+            // Descargar archivos como respaldo
+            downloadResults(data);
+            downloadTxtResults(data);
+            
+            alert(`¡Examen enviado automáticamente!
+
+📊 Participante: ${data.participantId}
+⏱️ Tiempo: ${data.timeSpentMinutes} minutos  
+🎯 Total CFP: ${data.totals.granTotal}
+
+✅ Datos enviados exitosamente
+📂 Archivos de respaldo descargados
+
+¡Gracias por tu participación!`);
+        }
+        
+        function submitToGoogleForms(data) {
+            // URL de tu Google Form - CON TUS ENTRY IDS REALES
+            const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf350RHlSlLJyh9fiUeiqA2fT1iTvvSG-s3FltYMTH54kpKhQ/formResponse';
+            
+            // Crear FormData con todos los campos usando los Entry IDs reales
+            const formData = new FormData();
+            
+            // Mapeo completo con tus Entry IDs
+            formData.append('entry.300475451', data.participantId);                    // 1. ID Participante
+            formData.append('entry.1284686737', data.timeSpentMinutes);               // 2. Tiempo Empleado
+            formData.append('entry.926759471', data.tableData.RF1.entradas);          // 3. RF1-E
+            formData.append('entry.2050957752', data.tableData.RF1.salidas);          // 4. RF1-X
+            formData.append('entry.1551223414', data.tableData.RF1.lecturas);         // 5. RF1-R
+            formData.append('entry.1585264431', data.tableData.RF1.escrituras);       // 6. RF1-W
+            formData.append('entry.570005580', data.tableData.RF1.total);             // 7. RF1-Total
+            formData.append('entry.2137535049', data.tableData.RF2.entradas);         // 8. RF2-E
+            formData.append('entry.374287656', data.tableData.RF2.salidas);           // 9. RF2-X
+            formData.append('entry.16804855', data.tableData.RF2.lecturas);           // 10. RF2-R
+            formData.append('entry.424256998', data.tableData.RF2.escrituras);        // 11. RF2-W
+            formData.append('entry.477333604', data.tableData.RF2.total);             // 12. RF2-Total
+            formData.append('entry.42304788', data.tableData.RF3.entradas);           // 13. RF3-E
+            formData.append('entry.1161577330', data.tableData.RF3.salidas);          // 14. RF3-X
+            formData.append('entry.1448828374', data.tableData.RF3.lecturas);         // 15. RF3-R
+            formData.append('entry.642016889', data.tableData.RF3.escrituras);        // 16. RF3-W
+            formData.append('entry.1968133146', data.tableData.RF3.total);            // 17. RF3-Total
+            formData.append('entry.147781726', data.tableData.RF4.entradas);          // 18. RF4-E
+            formData.append('entry.234893656', data.tableData.RF4.salidas);           // 19. RF4-X
+            formData.append('entry.91219835', data.tableData.RF4.lecturas);           // 20. RF4-R
+            formData.append('entry.384853585', data.tableData.RF4.escrituras);        // 21. RF4-W
+            formData.append('entry.623657995', data.tableData.RF4.total);             // 22. RF4-Total
+            formData.append('entry.1348082673', data.totals.granTotal);               // 23. Gran Total CFP
+            formData.append('entry.1687498595', data.textAnswers.justificacionRF1);   // 24. Justificación RF1
+            formData.append('entry.836448848', data.textAnswers.distinguirConsultas); // 25. Distinguir Consultas RF3
+            formData.append('entry.629652452', data.textAnswers.fronteraSistema);     // 26. Frontera del Sistema
+            formData.append('entry.1716192422', data.textAnswers.tamañoTotal);        // 27. Tamaño Total
+            
+            // Enviar datos usando fetch
+            fetch(GOOGLE_FORM_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Importante para Google Forms
+                body: formData
+            }).then(() => {
+                console.log('✅ Datos enviados exitosamente a Google Forms');
+            }).catch(error => {
+                console.error('❌ Error al enviar a Google Forms:', error);
+            });
+        }
+        
+        function formatResultsForEmail(data) {
+            return `RESULTADOS EXAMEN COSMIC FUNCTION POINTS
+==========================================
+
+ID Participante: ${data.participantId}
+Tiempo de inicio: ${new Date(data.startTime).toLocaleString()}
+Tiempo de finalización: ${new Date(data.endTime).toLocaleString()}
+Tiempo total empleado: ${data.timeSpentMinutes} minutos
+
+ANÁLISIS COSMIC:
+================
+RF1 - Registro nuevo usuario: E=${data.tableData.RF1.entradas}, X=${data.tableData.RF1.salidas}, R=${data.tableData.RF1.lecturas}, W=${data.tableData.RF1.escrituras} | Total: ${data.tableData.RF1.total} CFP
+RF2 - Consulta disponibilidad: E=${data.tableData.RF2.entradas}, X=${data.tableData.RF2.salidas}, R=${data.tableData.RF2.lecturas}, W=${data.tableData.RF2.escrituras} | Total: ${data.tableData.RF2.total} CFP
+RF3 - Registro préstamo: E=${data.tableData.RF3.entradas}, X=${data.tableData.RF3.salidas}, R=${data.tableData.RF3.lecturas}, W=${data.tableData.RF3.escrituras} | Total: ${data.tableData.RF3.total} CFP
+RF4 - Proceso devolución: E=${data.tableData.RF4.entradas}, X=${data.tableData.RF4.salidas}, R=${data.tableData.RF4.lecturas}, W=${data.tableData.RF4.escrituras} | Total: ${data.tableData.RF4.total} CFP
+RF5 - Gestión multas: E=${data.tableData.RF5.entradas}, X=${data.tableData.RF5.salidas}, R=${data.tableData.RF5.lecturas}, W=${data.tableData.RF5.escrituras} | Total: ${data.tableData.RF5.total} CFP
+RF6 - Renovación préstamo: E=${data.tableData.RF6.entradas}, X=${data.tableData.RF6.salidas}, R=${data.tableData.RF6.lecturas}, W=${data.tableData.RF6.escrituras} | Total: ${data.tableData.RF6.total} CFP
+
+TOTALES:
+========
+Total Entradas (E): ${data.totals.totalEntradas}
+Total Salidas (X): ${data.totals.totalSalidas}  
+Total Lecturas (R): ${data.totals.totalLecturas}
+Total Escrituras (W): ${data.totals.totalEscrituras}
+GRAN TOTAL: ${data.totals.granTotal} CFP
+
+RESPUESTAS TEXTUALES:
+===================
+1. Justificación RF1: ${data.textAnswers.justificacionRF1}
+2. Distinguir consultas RF3: ${data.textAnswers.distinguirConsultas}
+3. Análisis RF5: ${data.textAnswers.analisisRF5}
+4. Validaciones RF6: ${data.textAnswers.validacionesRF6}
+5. Frontera del sistema: ${data.textAnswers.fronteraSistema}
+6. Comparar complejidad: ${data.textAnswers.compararComplejidad}
+7. Tamaño total: ${data.textAnswers.tamañoTotal}`;
+        }
+        
+        function downloadTxtResults(data) {
+            const txtContent = formatResultsForEmail(data);
+            const txtBlob = new Blob([txtContent], {type: 'text/plain'});
+            const url = URL.createObjectURL(txtBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cosmic_exam_results_${data.participantId}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        function downloadResults(data) {
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cosmic_exam_results_${data.participantId}_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Warning before page unload
+        window.addEventListener('beforeunload', function(e) {
+            if (examStarted && !document.getElementById('exam-content').classList.contains('exam-disabled')) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
