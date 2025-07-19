@@ -282,6 +282,16 @@
             margin: 20px 0;
         }
 
+        .process-note {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+        }
+
         @media (max-width: 768px) {
             .exam-content {
                 padding: 20px;
@@ -346,37 +356,43 @@
                     <p>Debes analizar el tamaño funcional de un <strong>Sistema de Gestión de Biblioteca</strong> usando COSMIC Function Points. El sistema permite a bibliotecarios y usuarios gestionar el préstamo de libros.</p>
                 </div>
 
+                <div class="process-note">
+                    <strong>📌 IMPORTANTE:</strong> Cada requisito funcional describe un proceso funcional completo e independiente. Analiza cada uno por separado identificando todos sus movimientos de datos.
+                </div>
+
                 <div class="requirements">
                     <h4>🔍 Descripción Funcional del Sistema</h4>
                     
                     <div class="req-item">
                         <strong>RF1 - Registro de nuevo usuario:</strong><br>
-                        El bibliotecario puede registrar un nuevo usuario en el sistema. Debe ingresar: nombre completo, número de identificación, teléfono y email. El sistema valida que el número de identificación no exista previamente consultando la base de datos. Si no existe, guarda los datos del usuario y genera automáticamente un número de carnet. El sistema muestra un mensaje de confirmación con el número de carnet asignado.
+                        El bibliotecario ingresa los datos del nuevo usuario: nombre completo, número de identificación, teléfono y email. El sistema valida que el número de identificación no exista consultando la tabla de usuarios. Si el usuario no existe, guarda todos los datos en la tabla de usuarios y genera automáticamente un número de carnet único. El sistema muestra un mensaje de confirmación con el número de carnet asignado. Si el usuario ya existe, muestra un mensaje de error indicando que el número de identificación ya está registrado.
                     </div>
 
                     <div class="req-item">
                         <strong>RF2 - Consulta de disponibilidad de libros:</strong><br>
-                        Un usuario (bibliotecario o lector) puede consultar si un libro está disponible. Ingresa el título o ISBN del libro. El sistema busca en la base de datos de libros y verifica en la tabla de préstamos si está disponible. Muestra la información del libro (título, autor, ubicación) y su estado (disponible/prestado).
+                        El usuario (bibliotecario o lector) ingresa el título o ISBN del libro que desea consultar. El sistema busca en la tabla de libros los datos del libro (título, autor, ubicación, ISBN). Luego consulta la tabla de préstamos activos para verificar si ese libro tiene un préstamo vigente. Finalmente muestra la información completa del libro y su estado actual (disponible o prestado). Si el libro no existe, muestra un mensaje indicando que no se encontró.
                     </div>
 
                     <div class="req-item">
                         <strong>RF3 - Registro de préstamo:</strong><br>
-                        El bibliotecario registra un préstamo cuando un usuario solicita un libro. Ingresa el número de carnet del usuario y el ISBN del libro. El sistema consulta los datos del usuario y verifica que el libro esté disponible. Si todo está correcto, registra el préstamo con fecha actual y fecha de devolución (15 días después). Actualiza el estado del libro a "prestado" y muestra un comprobante de préstamo.
+                        El bibliotecario ingresa el número de carnet del usuario y el ISBN del libro a prestar. El sistema consulta la tabla de usuarios para obtener los datos del usuario. Consulta la tabla de libros para verificar que el libro existe. Consulta la tabla de préstamos activos para confirmar que el libro está disponible. Si todas las validaciones son correctas, crea un nuevo registro en la tabla de préstamos con: ID préstamo, carnet usuario, ISBN libro, fecha actual, fecha de devolución (15 días después), estado "activo". Actualiza el registro del libro en la tabla de libros cambiando su estado a "prestado". Finalmente muestra un comprobante con todos los datos del préstamo realizado.
                     </div>
 
                     <div class="req-item">
                         <strong>RF4 - Proceso de devolución:</strong><br>
-                        Cuando un usuario devuelve un libro, el bibliotecario ingresa el número de carnet y el ISBN. El sistema busca el préstamo activo, calcula si hay multa por retraso consultando las tarifas en la base de datos. Actualiza el estado del libro a "disponible", cierra el registro de préstamo, y si hay multa, la registra en el sistema. Muestra un mensaje con el estado de la devolución y monto de multa si aplica.
+                        El bibliotecario ingresa el número de carnet del usuario y el ISBN del libro a devolver. El sistema busca en la tabla de préstamos el registro activo correspondiente a ese usuario y libro. Calcula los días de retraso comparando la fecha actual con la fecha de devolución programada. Si hay retraso, consulta la tabla de tarifas para obtener el monto de multa por día. Actualiza el registro del préstamo cambiando su estado a "devuelto" y registrando la fecha real de devolución. Actualiza el registro del libro en la tabla de libros cambiando su estado a "disponible". Si hay multa, crea un nuevo registro en la tabla de multas con: ID multa, carnet usuario, monto, fecha, estado "pendiente". Muestra un mensaje con el resultado de la devolución incluyendo el monto de multa si aplica.
                     </div>
 
                     <div class="req-item">
                         <strong>RF5 - Gestión de multas:</strong><br>
-                        El bibliotecario puede consultar las multas pendientes de un usuario ingresando su número de carnet. El sistema busca todas las multas no pagadas del usuario, calcula el total adeudado y muestra un reporte detallado con fechas y montos. Cuando el usuario paga, el bibliotecario registra el pago indicando el monto y método de pago. El sistema actualiza el estado de las multas como "pagadas" y genera un comprobante de pago.
+                        <strong>Proceso 1 - Consulta de multas:</strong> El bibliotecario ingresa el número de carnet del usuario. El sistema busca en la tabla de multas todos los registros con estado "pendiente" de ese usuario. Calcula el total sumando los montos individuales. Muestra un reporte detallado con: lista de multas pendientes (fecha, monto, motivo) y el total adeudado.
+                        <br><br>
+                        <strong>Proceso 2 - Registro de pago:</strong> El bibliotecario ingresa el número de carnet, el monto a pagar y el método de pago (efectivo/tarjeta). El sistema consulta las multas pendientes del usuario. Actualiza los registros de multas cambiando su estado a "pagada" hasta cubrir el monto pagado (puede ser pago parcial o total). Crea un registro en la tabla de pagos con: ID pago, carnet usuario, monto, método, fecha. Genera y muestra un comprobante de pago con el detalle de las multas pagadas.
                     </div>
 
                     <div class="req-item">
                         <strong>RF6 - Renovación de préstamo:</strong><br>
-                        Un usuario puede solicitar renovar un préstamo antes de la fecha de vencimiento. El bibliotecario ingresa el número de carnet y el ISBN del libro. El sistema verifica que el préstamo esté activo, que no tenga multas pendientes el usuario, y que no haya reservas del libro por otros usuarios consultando la tabla de reservas. Si cumple las condiciones, extiende la fecha de devolución por 15 días más, registra la renovación en el historial y muestra confirmación. Si no cumple, muestra el motivo del rechazo.
+                        El bibliotecario ingresa el número de carnet del usuario y el ISBN del libro a renovar. El sistema busca en la tabla de préstamos el registro activo de ese préstamo. Verifica que la fecha actual sea anterior a la fecha de vencimiento (no se permiten renovaciones de préstamos vencidos). Consulta la tabla de multas para verificar que el usuario no tenga multas pendientes. Consulta la tabla de reservas para confirmar que no hay reservas activas de otros usuarios para ese libro. Si todas las validaciones son exitosas, actualiza el registro del préstamo extendiendo la fecha de devolución 15 días más desde la fecha de vencimiento original. Crea un registro en la tabla de historial_renovaciones con: ID renovación, ID préstamo, fecha renovación, nueva fecha devolución. Muestra un mensaje de confirmación con la nueva fecha de devolución. Si alguna validación falla, muestra el motivo específico del rechazo.
                     </div>
                 </div>
             </div>
@@ -385,6 +401,10 @@
                 <h3>📊 Análisis COSMIC - Completa la siguiente tabla</h3>
                 
                 <p style="margin-bottom: 20px;">Para cada requisito funcional, identifica y cuenta los movimientos de datos. Recuerda: <span class="highlight">E (Entrada), X (Salida), R (Lectura), W (Escritura)</span></p>
+
+                <div class="process-note">
+                    <strong>💡 Tip:</strong> RF5 contiene DOS procesos funcionales independientes. Debes analizarlos por separado y luego sumar los CFP.
+                </div>
 
                 <table class="analysis-table">
                     <thead>
@@ -431,7 +451,7 @@
                             <td><input type="number" min="0" max="20" placeholder="0" readonly style="background: #f8f9fa;"></td>
                         </tr>
                         <tr>
-                            <td><strong>RF5 - Gestión de multas</strong></td>
+                            <td><strong>RF5 - Gestión de multas (TOTAL)</strong></td>
                             <td><input type="number" min="0" max="10" placeholder="0"></td>
                             <td><input type="number" min="0" max="10" placeholder="0"></td>
                             <td><input type="number" min="0" max="10" placeholder="0"></td>
@@ -512,6 +532,22 @@
                     <h4>7. ¿Cuál es el tamaño funcional total del sistema en CFP? ¿Te parece un resultado razonable?</h4>
                     <div class="answer-space">
                         <input type="text" class="answer-input" placeholder="Total en CFP y comentario sobre si es razonable...">
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>8. Análisis de RF4 (Devolución) - ¿Cómo manejas la creación condicional de multas?</h4>
+                    <p>En RF4, la multa solo se crea si hay retraso. ¿Esto afecta el conteo de movimientos? Explica tu razonamiento.</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="3" placeholder="Explica cómo cuentas los movimientos condicionales..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>9. Diferencia entre actualización y creación de registros</h4>
+                    <p>En varios requisitos hay actualizaciones (UPDATE) y creaciones (INSERT). ¿Ambas cuentan como escrituras (W)? Justifica.</p>
+                    <div class="answer-space">
+                        <textarea class="answer-input" rows="3" placeholder="Explica si UPDATE e INSERT cuentan igual en COSMIC..."></textarea>
                     </div>
                 </div>
             </div>
@@ -675,6 +711,8 @@
             textAnswers.validacionesRF6 = textareas[3].value.trim();
             textAnswers.fronteraSistema = textareas[4].value.trim();
             textAnswers.compararComplejidad = textareas[5].value.trim();
+            textAnswers.multasCondicionales = textareas[6].value.trim();
+            textAnswers.updateVsInsert = textareas[7].value.trim();
             
             const finalAnswer = document.querySelector('input[type="text"].answer-input');
             textAnswers.tamañoTotal = finalAnswer.value.trim();
@@ -837,7 +875,9 @@ RESPUESTAS TEXTUALES:
 4. Validaciones RF6: ${data.textAnswers.validacionesRF6}
 5. Frontera del sistema: ${data.textAnswers.fronteraSistema}
 6. Comparar complejidad: ${data.textAnswers.compararComplejidad}
-7. Tamaño total: ${data.textAnswers.tamañoTotal}`;
+7. Tamaño total: ${data.textAnswers.tamañoTotal}
+8. Multas condicionales: ${data.textAnswers.multasCondicionales}
+9. Update vs Insert: ${data.textAnswers.updateVsInsert}`;
         }
         
         function downloadTxtResults(data) {
