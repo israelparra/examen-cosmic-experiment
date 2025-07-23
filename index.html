@@ -718,17 +718,20 @@
             // Collect text answers
             const textAnswers = {};
             const textareas = document.querySelectorAll('textarea.answer-input');
-            textAnswers.justificacionRF1 = textareas[0].value.trim();
-            textAnswers.distinguirConsultas = textareas[1].value.trim();
-            textAnswers.analisisRF5 = textareas[2].value.trim();
-            textAnswers.validacionesRF6 = textareas[3].value.trim();
-            textAnswers.fronteraSistema = textareas[4].value.trim();
-            textAnswers.compararComplejidad = textareas[5].value.trim();
-            textAnswers.multasCondicionales = textareas[6].value.trim();
-            textAnswers.updateVsInsert = textareas[7].value.trim();
+            textAnswers.justificacionRF1 = textareas[0].value.trim();        // Pregunta 1
+            textAnswers.distinguirConsultas = textareas[1].value.trim();     // Pregunta 2  
+            textAnswers.analisisRF5 = textareas[2].value.trim();             // Pregunta 3
+            textAnswers.validacionesRF6 = textareas[3].value.trim();         // Pregunta 4
+            textAnswers.fronteraSistema = textareas[4].value.trim();         // Pregunta 5
+            textAnswers.compararComplejidad = textareas[5].value.trim();     // Pregunta 6
+            textAnswers.multasCondicionales = textareas[6].value.trim();     // Pregunta 8
+            textAnswers.updateVsInsert = textareas[7].value.trim();          // Pregunta 9
             
-            const finalAnswer = document.querySelector('input[type="text"].answer-input');
-            textAnswers.tamañoTotal = finalAnswer.value.trim();
+            // ✅ CORREGIDO: Buscar específicamente el input de la pregunta 7
+            // El primer input[type="text"] es el nombre del participante
+            // El segundo input[type="text"] es la pregunta 7
+            const allTextInputs = document.querySelectorAll('input[type="text"].answer-input');
+            textAnswers.tamañoTotal = allTextInputs[1].value.trim();              // Pregunta 7 (segundo input text)
             
             return {
                 participantId,
@@ -797,10 +800,10 @@
             // URL de tu Google Form - CON TUS ENTRY IDS ACTUALIZADOS
             const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf350RHlSlLJyh9fiUeiqA2fT1iTvvSG-s3FltYMTH54kpKhQ/formResponse';
             
-            // Crear FormData con todos los campos usando los Entry IDs NUEVOS
+            // Crear FormData con todos los campos usando los Entry IDs ACTUALIZADOS
             const formData = new FormData();
             
-            // Mapeo completo con tus Entry IDs actualizados
+            // Mapeo completo con tus Entry IDs actualizados - INCLUYENDO LAS NUEVAS PREGUNTAS
             formData.append('entry.300475451', data.participantId);                    // 1. ID Participante
             formData.append('entry.1284686737', data.timeSpentReadable);               // 2. Tiempo Empleado en formato legible
             formData.append('entry.926759471', data.tableData.RF1.entradas);          // 3. RF1-E
@@ -823,24 +826,27 @@
             formData.append('entry.91219835', data.tableData.RF4.lecturas);           // 20. RF4-R
             formData.append('entry.384853585', data.tableData.RF4.escrituras);        // 21. RF4-W
             formData.append('entry.623657995', data.tableData.RF4.total);             // 22. RF4-Total
-            formData.append('entry.809144775', data.tableData.RF5.entradas);          // 23. RF5-E (NUEVO)
-            formData.append('entry.1240997932', data.tableData.RF5.salidas);          // 24. RF5-X (NUEVO)
-            formData.append('entry.283902922', data.tableData.RF5.lecturas);          // 25. RF5-R (NUEVO)
-            formData.append('entry.347072477', data.tableData.RF5.escrituras);        // 26. RF5-W (NUEVO)
-            formData.append('entry.731554035', data.tableData.RF5.total);             // 27. RF5-Total (NUEVO)
-            formData.append('entry.537629101', data.tableData.RF6.entradas);          // 28. RF6-E (NUEVO)
-            formData.append('entry.779600758', data.tableData.RF6.salidas);           // 29. RF6-X (NUEVO)
-            formData.append('entry.496198568', data.tableData.RF6.lecturas);          // 30. RF6-R (NUEVO)
-            formData.append('entry.930168337', data.tableData.RF6.escrituras);        // 31. RF6-W (NUEVO)
-            formData.append('entry.2128805208', data.tableData.RF6.total);            // 32. RF6-Total (NUEVO)
+            formData.append('entry.809144775', data.tableData.RF5.entradas);          // 23. RF5-E
+            formData.append('entry.1240997932', data.tableData.RF5.salidas);          // 24. RF5-X
+            formData.append('entry.283902922', data.tableData.RF5.lecturas);          // 25. RF5-R
+            formData.append('entry.347072477', data.tableData.RF5.escrituras);        // 26. RF5-W
+            formData.append('entry.731554035', data.tableData.RF5.total);             // 27. RF5-Total
+            formData.append('entry.537629101', data.tableData.RF6.entradas);          // 28. RF6-E
+            formData.append('entry.779600758', data.tableData.RF6.salidas);           // 29. RF6-X
+            formData.append('entry.496198568', data.tableData.RF6.lecturas);          // 30. RF6-R
+            formData.append('entry.930168337', data.tableData.RF6.escrituras);        // 31. RF6-W
+            formData.append('entry.2128805208', data.tableData.RF6.total);            // 32. RF6-Total
             formData.append('entry.1347442573', data.totals.granTotal);               // 33. Gran Total CFP
             formData.append('entry.1136182533', data.textAnswers.justificacionRF1);   // 34. Justificación RF1
             formData.append('entry.1338129771', data.textAnswers.distinguirConsultas); // 35. Distinguir Consultas RF3
-            formData.append('entry.1348082673', data.textAnswers.analisisRF5);        // 36. Análisis RF5 (NUEVO)
-            formData.append('entry.1687498595', data.textAnswers.validacionesRF6);    // 37. Validaciones RF6 (NUEVO)
+            formData.append('entry.1348082673', data.textAnswers.analisisRF5);        // 36. Análisis RF5
+            formData.append('entry.1687498595', data.textAnswers.validacionesRF6);    // 37. Validaciones RF6
             formData.append('entry.836448848', data.textAnswers.fronteraSistema);     // 38. Frontera del Sistema
-            formData.append('entry.629652452', data.textAnswers.compararComplejidad); // 39. Comparar Complejidad (NUEVO)
+            formData.append('entry.629652452', data.textAnswers.compararComplejidad); // 39. Comparar Complejidad
             formData.append('entry.1716192422', data.textAnswers.tamañoTotal);        // 40. Tamaño Total
+            // ✅ NUEVAS PREGUNTAS AGREGADAS
+            formData.append('entry.441861455', data.textAnswers.multasCondicionales); // 41. Análisis RF4 - Multas Condicionales
+            formData.append('entry.531908254', data.textAnswers.updateVsInsert);      // 42. Diferencia UPDATE vs INSERT
             
             // Enviar datos usando fetch
             fetch(GOOGLE_FORM_URL, {
@@ -848,7 +854,10 @@
                 mode: 'no-cors', // Importante para Google Forms
                 body: formData
             }).then(() => {
-                console.log('✅ Datos enviados exitosamente a Google Forms con TODOS los campos nuevos');
+                console.log('✅ Datos enviados exitosamente a Google Forms - TODAS las 42 entradas mapeadas correctamente');
+                console.log('📋 Preguntas 1-7: Datos de tabla y preguntas textuales');
+                console.log('📋 Pregunta 8 (entry.441861455): Multas condicionales RF4');
+                console.log('📋 Pregunta 9 (entry.531908254): UPDATE vs INSERT');
             }).catch(error => {
                 console.error('❌ Error al enviar a Google Forms:', error);
             });
